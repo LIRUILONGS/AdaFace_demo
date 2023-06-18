@@ -1,14 +1,52 @@
+---
+title: AdaFace(Quality Adaptive Margin for Face Recognition)：通过AdaFace实现低质量面部数据集的人脸识别
+tags:
+  - AdaFace
+categories:
+  - AdaFace
+toc: true
+recommend: 1
+keywords: AdaFace
+uniqueId: '2023-06-17 03:07:48/AdaFace： AdaFace(Quality Adaptive Margin for Face Recognition)：通过AdaFace实现低质量面部数据集的人脸识别.html'
+mathJax: false
+date: 2023-06-17 11:07:48
+thumbnail:
+---
 
+**<font color="009688"> 对每个人而言，真正的职责只有一个：找到自我。然后在心中坚守其一生，全心全意，永不停息。所有其它的路都是不完整的，是人的逃避方式，是对大众理想的懦弱回归，是随波逐流，是对内心的恐惧 ——赫尔曼·黑塞《德米安》**</font>
+
+<!-- more -->
 ## 写在前面
 
 ***
 + 工作中遇到，简单整理
++ 个人很推荐这个模型，识别相对要好一点
 + 理解不足小伙伴帮忙指正
 
 
 **<font color="009688"> 对每个人而言，真正的职责只有一个：找到自我。然后在心中坚守其一生，全心全意，永不停息。所有其它的路都是不完整的，是人的逃避方式，是对大众理想的懦弱回归，是随波逐流，是对内心的恐惧 ——赫尔曼·黑塞《德米安》**</font>
 
 ***
+
+`低质量人脸数据集`中的`识别`具有挑战性，因为人脸属性被模糊和降级。基于`裕量的损失函数`的进步提高了嵌入空间中人脸的可辨别性。
+
+
+此外，以前的研究已经研究了`适应性损失`的影响，以更加重视`错误分类`的（硬）例子。在这项工作中，我们介绍了`损失函数自适应性`的另一个方面，即`图像质量`。我们认为，强调错误分类样本的策略应根据其图像质量进行调整。具体来说，简单和硬样品的相对重要性应基于样品的图像质量。
+
+我们`提出了一种新的损失函数，该函数根据图像质量强调不同难度的样本。我们的方法通过用特征范数近似图像质量，以自适应裕量函数的形式实现这一点`。大量的实验表明，我们的方法`AdaFace`在四个数据集（IJB-B，IJB-C，IJB-S和TinyFace）上提高了最先进的（SoTA）的人脸识别性能。
+
+
+```bash
+@inproceedings{kim2022adaface,
+  title={AdaFace: Quality Adaptive Margin for Face Recognition},
+  author={Kim, Minchul and Jain, Anil K and Liu, Xiaoming},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  year={2022}
+}
+```
+
+实际测试中发现，`AdaFace` 确实很强大，特别适合远距离，小目标，图片质量低的人脸识别。
+
 
 [https://github.com/mk-minchul/AdaFace](https://github.com/mk-minchul/AdaFace)
 
@@ -28,7 +66,7 @@ Solving environment: done
 Looking in indexes: http://pypi.douban.com/simple/
 ```
 
-没有GPU环境，所以我们需要修改代码为 CPU 可以执行
+没有GPU，所以我们需要修改原代码中部分为 CPU 可以执行
 
 修改位置：`\GitHub\AdaFace_demo\face_alignment\align.py`
 ```bash
@@ -44,8 +82,10 @@ statedict = torch.load(adaface_models[architecture])['state_dict']
 statedict = torch.load(adaface_models[architecture], map_location=torch.device('cpu'))['state_dict']
 ```
 
-之后需要下载对应的预训练模型文件，地址可以在 github 看到。放到指定位置就可以执行了。
+之后需要下载对应的模型文件，可以做 github 看到。放到指定位置`pretrained/adaface_ir101_webface12m.ckpt`就可以执行了，这里不多讲
 
+
+运行 Demo,3 张图片比较
 ```bash
 (AdaFace) C:\Users\liruilong\Documents\GitHub\AdaFace_demo> python inference.py
 C:\Users\liruilong\Documents\GitHub\AdaFace_demo\face_alignment\mtcnn_pytorch\src\matlab_cp2tform.py:90: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
@@ -58,18 +98,21 @@ tensor([[ 1.0000,  0.7329, -0.0794],
         [-0.0794, -0.0087,  1.0000]], grad_fn=<MmBackward0>)
 ```
 
+这里的矩阵表示，每张图片相互比较，矩阵为3*3，三行三列，第一张图片跟第一张图片的相似度为 1 (自己和自己比)，然后第一张图片跟第二张图片对比的相似度为 ` 0.7329`，第一张图片跟第三张图片对比的相似度为 `-0.0794`，对角都为自己和自己比较所以是1.
 
-这里的矩阵表示，每张图片相互比较，矩阵为3*3，三行三列，第一张图片跟第一张图片的相似度为 1 ，，然后第一张图片跟第二张图片对比的相似度为 ` 0.7329`，第一张图片跟第三张图片对比的相似度为 `-0.0794`，对角都为自己和自己比较所以是1.
+我们通过上面余弦相似度得分可以区分是否是一个人，在具体的人脸识别应用中。
 
-我们通过上面余弦相似度得分可以区分是否是一个人，这具体的人脸识别项目中。
-
-需要先通过模型把人脸库每张照片的特征向量保存到文本里，然后需要识别的时候，在通过模型获取识别照片的特征向量，库里的每个向量和识别照片的特征向量获取余弦相似度得分，取最大值，通过得分判断是否为一个人，实现人脸识别。
+1. 需要预先通过上面的模型把人脸库每张照片的特征向量保存到文本里，生成特征向量集 `Ax={A1,A2,A3,....Ai}(i=n)`
+2. 需要识别的时候，通过模型获取要识别照片的特征向量 `B1`，用特征向量集 `Ax` 中的每个向量`Ai`和识别照片的特征向量`B1`获取余弦相似度得分
+3. 对于获取的相似得分最大值，和阈值判断，或者取大于阈值内的数据，判断是否为一个人，从而实现人脸识别。
+4. 相似度得分是一个接近 小于等一，大于等于 -1 的值，越大相识度越高，等于1 即是确定同一个人，-1 即完全不是一个人， 实际识别中，给相似得分一个阈值，在这个范围内我们确定为一个人。
 
 下面为一个 Demo
 
-+ build_vector_pkl 生成特征文件
-+ read_vector_pkl 读取特征文件
-+ find 比对解析，返回识别结果
++ `build_vector_pkl` 用于生成特征文件(需要准备一个照片数据集，通过照片名字标注人)
++ `read_vector_pkl` 用于加载特征文件到内存
++ `find` 用于需要识别的人脸和人脸库比对，返回识别结果
++ 这里默认我们已经通过检测，每张识别照片只有一个人脸。
 
 ```py
 import net
@@ -79,11 +122,7 @@ from face_alignment import align
 import numpy as np
 import pandas as pd
 
-
-adaface_models = {
-    'ir_101': "pretrained/adaface_ir101_webface12m.ckpt",
-}
-
+adaface_models = {'ir_101': "pretrained/adaface_ir101_webface12m.ckpt",}
 
 def load_pretrained_model(architecture='ir_101'):
     # load model and pretrained statedict
@@ -97,7 +136,6 @@ def load_pretrained_model(architecture='ir_101'):
     model.eval()
     return model
 
-
 def to_input(pil_rgb_image):
     tensor = None
     try:
@@ -107,7 +145,6 @@ def to_input(pil_rgb_image):
     except Exception :
         return tensor    
     return tensor
-
 
 def read_vector_pkl(db_path, adaface_model_name):
     """
@@ -121,8 +158,6 @@ def read_vector_pkl(db_path, adaface_model_name):
                    df
     """
     import pickle
-
-
     file_name = f"representations_adaface_{adaface_model_name}.pkl"
     file_name = file_name.replace("-", "_").lower()
     with open(f"{db_path}/{file_name}", "rb") as f:
@@ -146,8 +181,6 @@ def build_vector_pkl(db_path, adaface_model_name='adaface_model'):
     from os import path
     from tqdm import tqdm
     import pickle
-
-    tic = time.time()
 
     if os.path.isdir(db_path) is not True:
         raise ValueError("Passed db_path does not exist!")
@@ -188,12 +221,8 @@ def build_vector_pkl(db_path, adaface_model_name='adaface_model'):
             instance.append(employee)
             instance.append(img_representation)
             representations.append(instance)
-
-        # -------------------------------
-
         with open(f"{db_path}/{file_name}", "wb") as f:
             pickle.dump(representations, f)
-
 
 
 def get_represent(path):
@@ -243,6 +272,7 @@ def demo1():
     similarity_scores = torch.cat(features) @ torch.cat(features).T   
     print(similarity_scores)
 
+
 def find(test_image_path,threshold=0.5):
     """
     @Time    :   2023/06/16 14:02:52
@@ -290,8 +320,6 @@ def marge(m1,m2):
 
 
 
-
-
 if __name__ == '__main__':
    
     import imutils 
@@ -299,15 +327,13 @@ if __name__ == '__main__':
     import cv2
     import uuid
     model = load_pretrained_model('ir_101')
-    #feature, norm = model(torch.randn(2, 3, 112, 112))
-    
+    # 需要识别的图片位置
     test_image_path = 'face_alignment/ser'
-    
     features = set()
     model_name = "test_img"
+
     build_vector_pkl("face_alignment/test",model_name)
     df = read_vector_pkl("face_alignment/test", model_name)
-
     
     for path in paths.list_images(test_image_path):
         b, r = find(path,0.25)
@@ -319,7 +345,6 @@ if __name__ == '__main__':
             img = cv2.imread(path)
             cv2.imwrite('__not'  + str(uuid.uuid4()).replace('-', '')+".jpg", img)
         
-
 ```
 
 
@@ -330,6 +355,9 @@ if __name__ == '__main__':
 
 ***
 
+AdaFace: Quality Adaptive Margin for Face Recognition(AdaFace：用于人脸识别的质量自适应裕量): [https://arxiv.org/abs/2204.00964](https://arxiv.org/abs/2204.00964)
+
+https://github.com/mk-minchul/AdaFace
 
 ***
 
