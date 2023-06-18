@@ -127,7 +127,7 @@ def get_represent(path):
     @Time    :   2023/06/16 11:54:11
     @Author  :   liruilonger@gmail.com
     @Version :   1.0
-    @Desc    :   获取脸部向量
+    @Desc    :   获取脸部特征向量
                  Args:
                    
                  Returns:
@@ -174,7 +174,7 @@ def find(test_image_path,threshold=0.5):
     @Time    :   2023/06/16 14:02:52
     @Author  :   liruilonger@gmail.com
     @Version :   1.0
-    @Desc    :   找人
+    @Desc    :   根据图片在人脸库比对找人
                  Args:
                    
                  Returns:
