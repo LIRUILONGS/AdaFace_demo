@@ -36,6 +36,9 @@ class AdafaceRecognition:
     adaface_models = {
         'ir_101': "pretrained/adaface_ir101_webface12m.ckpt",
     }
+    
+
+
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
@@ -111,7 +114,7 @@ class AdafaceRecognition:
         """
         
         file_name = f"representations_adaface_{adaface_model_name}.pkl"
-        file_name = file_name.replace("-", "_").lower()
+        self.file_name = file_name.replace("-", "_").lower()
         with open(f"{db_path}/{file_name}", "rb") as f:
                 representations = pickle.load(f)
         self.df = pd.DataFrame(representations, columns=["identity", f"{adaface_model_name}_representation"])
@@ -216,6 +219,12 @@ class AdafaceRecognition:
                        
                      Returns:
                        返回比对结果集
+                        b -->   识别结果              cosine_similarity > threshold 
+                        c -->   比对完的最大相似度得分 cosine_similarity
+                        r -->   对应的人脸库人脸位置   reset[cosine_similarity]
+                        i -->   比对的图片            img
+                        t -->   对比图片的特征值       test_representation
+
         """
 
         test_representations = self.get_represents(test_image_path)
@@ -234,8 +243,11 @@ class AdafaceRecognition:
                     source_representation = instance[f"{self.adaface_model_name}_representation"]
                     ten = AdafaceRecognition.findCosineDistance(source_representation,test_representation)
                     reset[ten.item()]= instance["identity"]        
+                    # 如果得分大于阈值`2*1/5`个单位，则比较完成，跳出循环
+                    if threshold + (2*threshold/5)  < ten:
+                        break
                 cosine_similarity =  max(reset.keys())
-                res.append((cosine_similarity > threshold ,cosine_similarity,reset[cosine_similarity],img))         
+                res.append((cosine_similarity > threshold ,cosine_similarity,reset[cosine_similarity],img,test_representation))         
             return res
         else:
             return res
@@ -245,9 +257,9 @@ class AdafaceRecognition:
         @Time    :   2023/06/16 11:54:11
         @Author  :   liruilonger@gmail.com
         @Version :   1.0
-        @Desc    :   获取脸部特征向量
+        @Desc    :   获取单个脸部特征向量
                      Args:
-
+                        path: 可以是图片路径，获取第一个人脸的特征向量，也可以是 Image.Image 对象
                      Returns:
                        返回特性向量
         """
@@ -276,11 +288,11 @@ class AdafaceRecognition:
         @Time    :   2023/06/18 06:03:09
         @Author  :   liruilonger@gmail.com
         @Version :   1.0
-        @Desc    :   获取脸部特征向量
+        @Desc    :   获取多个脸部特征向量
                      Args:
                        
                      Returns:
-                       返回特征向量和对应人脸
+                       返回特征向量和对应人脸 Image.Image 对象 的 list
         """
         features_t = []
         try:
@@ -392,51 +404,24 @@ class AdafaceRecognition:
         return img  
 
     
-    def stranger_weight_removal(self,image_path,threshold=0.15):
+              
+    def stranger_weight_removals(self,image,threshold=0.15):
         """
-        @Time    :   2023/06/18 06:47:25
+        @Time    :   2023/06/19 02:23:08
         @Author  :   liruilonger@gmail.com
         @Version :   1.0
         @Desc    :   陌生人去重
                      Args:
-                       
+                       image: 去重的image，可以是一个图片路径，也可以是 处理完的特征向量，
                      Returns:
                        void
         """
         
-        test_representation = self.get_represent(image_path)
-        if test_representation  is  not None :
-            reset = {}
-            if  not self.features :
-                self.features.append(test_representation)
-                return False, 0
-            else:
-                pbar = tqdm(
-                    range(0, len(self.features)),
-                    desc="陌生人归类：👽👽👽 ",
-                    mininterval=0.1, 
-                    maxinterval=1.0, 
-                    smoothing=0.01,                 
-                    colour='#f6b26b',
-                    postfix="👽👽")
-                
-                for i in pbar:
-                    instance = self.features[i]
-                    ten = AdafaceRecognition.findCosineDistance(instance,test_representation)
-                    reset[ten.item()]= instance 
-                      
-                cosine_similarity =  max(reset.keys())      
-                if cosine_similarity > threshold :
-                    return True, cosine_similarity   
-                else:
-                    self.features.append(test_representation)
-                    return False, cosine_similarity 
-                
+
+        if  isinstance(image, str):
+            test_representation = self.get_represents(image)
         else:
-            return False,-1
-              
-    def stranger_weight_removals(self,image_path,threshold=0.15):
-        test_representation = self.get_represent(image_path)
+            test_representation = image
         if test_representation  is  not None :
             reset = {}
             if  not self.features :
@@ -456,6 +441,9 @@ class AdafaceRecognition:
                     instance = self.features[i]
                     ten = AdafaceRecognition.findCosineDistance(instance,test_representation)
                     reset[ten.item()]= instance 
+                    # 如果得分大于阈值`2*1/5`个单位，则比较完成，跳出循环
+                    if threshold + (2*threshold/5)  < ten:
+                        break
                       
                 cosine_similarity =  max(reset.keys())      
                 if cosine_similarity >= threshold :
@@ -509,7 +497,7 @@ class AdafaceRecognition:
                         img = cv2.imread(path)
                         boo, img = face_yaw_pitc_roll.is_gesture(img,10)
                         if boo:
-                            bo,tt  = ada.stranger_weight_removal(path,0.17)
+                            bo,tt  = ada.stranger_weight_removals(path,0.17)
                             if bo:
                                 os.remove(path) 
                                 continue
@@ -518,8 +506,61 @@ class AdafaceRecognition:
                     os.remove(path) 
             time.sleep(1)        
 
+    def load_memory_db(self):
+        """
+        @Time    :   2023/06/18 23:21:52
+        @Author  :   liruilonger@gmail.com
+        @Version :   1.0
+        @Desc    :   加载内存中存在的识别数据
+                     Args:
+                       
+                     Returns:
+                       void
+        """
+        m_db_f  = f"{self.db_path}/M_{self.file_name}"
+        if path.exists(m_db_f):
+            pass
+            with open(m_db_f, "rb") as f:
+                representations = pickle.load(f)
+            
+        else:
+            print("内存特征文件未保存!")
+
+
+    def save_memory_db(self):
+        """
+        @Time    :   2023/06/18 23:37:37
+        @Author  :   liruilonger@gmail.com
+        @Version :   1.0
+        @Desc    :   保存内存中存在的识别数据
+                     Args:
+                       
+                     Returns:
+                       void
+        """
+        m_db_f  = f"{self.db_path}/M_{self.file_name}"
+        if path.exists(m_db_f):
+            
+            os.remove(m_db_f)
+            self.features 
+
+        else:
+            print("内存特征文件未保存!")
+            pass
+            with open(m_db_f, "rb") as f:
+                representations = pickle.load(f)
+
+
+                
+
+
+
+
+        
+
+
     @staticmethod
-    def multiplayer_re(ada,test_image_path):
+    def multiplayer_re(ada,test_image_path,is_memory_db=False):
         """
         @Time    :   2023/06/18 06:19:17
         @Author  :   liruilonger@gmail.com
@@ -530,11 +571,9 @@ class AdafaceRecognition:
                      Returns:
                        void
         """
-        
-        f ={}
-        # 标记人脸识别
-        t_  = 0
-
+    
+        # 识别出的人脸数据 
+        faces ={}
         while True:
             print("👻👻👻👻🧟‍♀️🧟‍♀️🧟‍♀️🧟‍♀️😀😀😀😀🥶😡🤢😈👽😹🙈🦝",time.time())
             file_paths = list(paths.list_images(test_image_path))
@@ -548,31 +587,38 @@ class AdafaceRecognition:
                     postfix=" 👻") 
 
             for index in pbar:
-                    path = file_paths[index]               
-                    data_f_r = ada.find_faces(path,0.18)
-                    for  b,c,r,i  in   data_f_r:
+                    path = file_paths[index]
+                    # 0.18               
+                    data_f_r = ada.find_faces(path,0.35)
+                    pbar = tqdm(
+                        range(0, len(data_f_r)),
+                        desc="识别结果归类：👽👽👽 ",
+                        mininterval=0.1, 
+                        maxinterval=1.0, 
+                        smoothing=0.01,                 
+                        colour='#f6b26b',
+                        postfix="👽👽")
+                    for  index  in   pbar:
+                        b,c,r,i,t = data_f_r[index]
                         # 识别成功
                         if b:
-                            if r not in f:
-                                f[r]=c
-                                w, h = i.size
-                                i = i.resize((w * 3, h * 3))
+                            if r not in faces:
+                                faces[r]=c
                                 AdafaceRecognition.marge(r,i,"./")
                             else:
-                                if f[r] < c:
-                                    w, h = i.size
-                                    i = i.resize((w * 3, h * 3))
+                                if faces[r] < c: 
                                     AdafaceRecognition.marge(r,i,"./")    
                         else:
                             numpy_image = np.array(i)
                             cv2_image = cv2.cvtColor(numpy_image, cv2.COLOR_RGB2BGR)
-                            boo, img = face_yaw_pitc_roll.is_gesture(cv2_image,10)
-                            if boo:
-                                bo,tt  = ada.stranger_weight_removals(i,0.15)
+                            #boo, img = face_yaw_pitc_roll.is_gesture(cv2_image,10)
+                            if True:
+                                # 0.15
+                                bo,tt  = ada.stranger_weight_removals(t,0.30)
                                 if bo:
                                     continue
                                 else:
-                                    cv2.imwrite(str(tt) +".jpg", img)    
+                                    cv2.imwrite(str(tt) +".jpg", cv2_image)    
                     os.remove(path) 
             time.sleep(1)
         
@@ -581,6 +627,7 @@ if __name__ == '__main__':
 
     ada =  AdafaceRecognition(db_path="face_alignment/test",adaface_model_name="adaface_model")
     test_image_path = 'W:\python_code\deepface\\temp\\temp'
+
     #AdafaceRecognition.single_re(ada,test_image_path)
     AdafaceRecognition.multiplayer_re(ada,test_image_path)
     
