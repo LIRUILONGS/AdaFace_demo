@@ -21,7 +21,6 @@ import imutils
 from decimal import Decimal
 from imutils import paths
 import os
-import face_yaw_pitc_roll
 import uuid
 
 import inference
@@ -60,19 +59,15 @@ def extract_faces_all(img_path):
         rst = DeepFace.extract_faces(
             img_path=image,
             target_size=(224, 224),
-            detector_backend="dlib",
+            detector_backend="mtcnn",
             enforce_detection=True,
             align=True,
             grayscale=False)
     except Exception as e:
         print(e)
-        # print("解析错误的图片：",img_path)
-        # file_name = os.path.basename(img_path)
-        # cv2.imwrite("C:\putot\\"+file_name, image)
-        # print("保存解析错误的图：","C:\putot\\"+file_name)
         return
 
-    # print(rst)
+    print(rst)
     # if face_detector_obj in None:
     #     print("数据为空：",face_detector_obj)
 
@@ -95,30 +90,17 @@ def extract_faces_all(img_path):
             color = (255, 255, 255)
         else:
             # 这个精度的考虑用于识别,切片保存
-
+            if w <= 35 or h <=35 :
+                continue 
             cropped_img = image[y:y + h, x:x + w]
             # 对切片进行等比放大
             cropped_img = imutils.resize(cropped_img, width=224)
-            boo, img = face_yaw_pitc_roll.is_gesture(cropped_img,15)
-            if boo:
-                cv2.imwrite('temp\\cf_' + str(i) + str(uuid.uuid4()).replace('-', '')+".jpg", img)
-            else:
-                continue
-            #cv2.imwrite('new_' + str(i) + img_path, cropped_img)
-            pass
+            cv2.imwrite('temp\\cf_' + str(i) + str(uuid.uuid4()).replace('-', '')+".jpg", cropped_img)
+
+
         # 根据坐标标记图片,标记框的左上角和右下角的坐标,
-        #cv2.rectangle(image, (x1, y1), (x2, y2), color, 3)
-        # 添加 置信度标签
-        #cv2.putText(image, format(f['confidence'], '0.4f'), (x1, y1 - 5), cv2.FONT_HERSHEY_COMPLEX, 0.5, color, 1,cv2.LINE_4)
-        #file_name = os.path.basename(img_path)
+     
 
-        #cv2.imwrite('C:\putot\\new_\\' + file_name, image)
-        #print("保存图片位置："+'C:\putot\\new_\\__' + file_name)
-
-# if __name__ == '__main__':
-#     for path in paths.list_images("W:\photo\\b1205"):
-#         print(path)
-#         extract_faces_all(path)
 
 def face_recognition(file_path):
     """
@@ -146,6 +128,6 @@ def for_m():
 
 if __name__ == '__main__':
     
-    face_recognition("W:\\back_20230522\\")
+    for_m()
     
 
