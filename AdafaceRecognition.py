@@ -39,8 +39,6 @@ class AdafaceRecognition:
     }
 
 
-
-
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
@@ -206,7 +204,7 @@ class AdafaceRecognition:
         return self
 
 
-    def find_face(self,test_image_path,threshold=0.5):
+    def find_face(self,test_image_path,threshold=0.5,stranger_discard_threshold=0.1  ):
         """
         @Time    :   2023/06/16 14:02:52
         @Author  :   liruilonger@gmail.com
@@ -431,10 +429,6 @@ class AdafaceRecognition:
         @Author  :   liruilonger@gmail.com
         @Version :   1.0
         @Desc    :   图片合并
-                     Args:
-
-                     Returns:
-                       void
         """
         if isinstance(m1, Image.Image):
             image1 = m1
@@ -561,56 +555,6 @@ class AdafaceRecognition:
            os.remove(file_path)
 
 
-              
-
-    @staticmethod
-    def single_re(ada,test_image_path):
-        """
-        @Time    :   2023/06/18 06:18:56
-        @Author  :   liruilonger@gmail.com
-        @Version :   1.0
-        @Desc    :   单人识别(已废弃)
-                     Args:
-                       
-                     Returns:
-                       void
-        """
-        
-        f = set()
-        while True:
-            print("👻👻👻👻🧟‍♀️🧟‍♀️🧟‍♀️🧟‍♀️😀😀😀😀🥶😡🤢😈👽😹🙈🦝",time.time())
-            file_paths = list(paths.list_images(test_image_path))
-            pbar = tqdm(
-                    range(0, len(file_paths)),
-                    desc="人脸识别中：👻 ",
-                    mininterval=0.1, 
-                    maxinterval=1.0, 
-                    smoothing=0.01,                 
-                    colour='#b6d7a8',
-                    postfix=" 👻") 
-
-            for index in pbar:
-                    path = file_paths[index]               
-                    b, r = ada.find_face(path,0.23)
-                    if b:
-                        if    r not in f:
-                            f.add(r)
-                            AdafaceRecognition.marge(r,path,"./")
-                    else:
-                        img = cv2.imread(path)
-                        boo, img = face_yaw_pitc_roll.is_gesture(img,10)
-                        if boo:
-                            bo,tt  = ada.stranger_weight_removals(path,0.16)
-                            if bo:
-                                os.remove(path) 
-                                continue
-                            else:
-                                cv2.imwrite(str(tt) +".jpg", img)    
-                    os.remove(path) 
-            time.sleep(1)        
-
-
-
     @staticmethod
     def multiplayer_re(ada,test_image_path,is_memory_db=False):
         """
@@ -641,7 +585,7 @@ class AdafaceRecognition:
             for index in pbar:
                     path = file_paths[index]
                     # 0.18               
-                    data_f_r = ada.find_faces(path,0.22)
+                    data_f_r = ada.find_faces(path,0.4)
                     pbar = tqdm(
                         range(0, len(data_f_r)),
                         desc="识别结果归类：🎉🎉🎉 ",
@@ -666,7 +610,7 @@ class AdafaceRecognition:
                             boo, img = face_yaw_pitc_roll.is_gesture(cv2_image,10)
                             if boo:
                                 # 0.15
-                                bo,tt  = ada.stranger_weight_removals(t,0.2)
+                                bo,tt  = ada.stranger_weight_removals(t,0.4)
                                 if bo:
                                     continue
                                 else:
