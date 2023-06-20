@@ -609,7 +609,7 @@ class AdafaceRecognition:
                     print("ip_zone：",ip_zone)
                     ada.ip_zone = ip_zone
                     # 0.18               
-                    data_f_r = ada.find_faces(path,0.35)
+                    data_f_r = ada.find_faces(path,0.25)
                     pbar = tqdm(
                         range(0, len(data_f_r)),
                         desc="识别结果归类：👽👽👽 ",
@@ -631,10 +631,10 @@ class AdafaceRecognition:
                         else:
                             numpy_image = np.array(i)
                             cv2_image = cv2.cvtColor(numpy_image, cv2.COLOR_RGB2BGR)
-                            #boo, img = face_yaw_pitc_roll.is_gesture(cv2_image,10)
-                            if True:
+                            boo, img = face_yaw_pitc_roll.is_gesture(cv2_image,10)
+                            if boo:
                                 # 0.15
-                                bo,tt  = ada.stranger_weight_removals(t,0.30)
+                                bo,tt  = ada.stranger_weight_removals(t,0.2)
                                 if bo:
                                     continue
                                 else:
@@ -652,7 +652,8 @@ if __name__ == '__main__':
     #AdafaceRecognition.single_re(ada,test_image_path)
     AdafaceRecognition.multiplayer_re(ada,test_image_path)
     for k in ada.features.keys():
-        print(len(ada.features[k]))
+        
+        print(f"陌生人区域：{k}","陌生人个数:" ,len(ada.features[k]))
     
     
                

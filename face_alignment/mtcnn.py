@@ -20,7 +20,7 @@ class MTCNN():
 
         assert device in ['cuda:0', 'cpu']
         self.device = torch.device(device)
-        assert crop_size in [(112, 112), (96, 112)]
+        assert crop_size in [(112, 112), (96, 112),(224,224)]
         self.crop_size = crop_size
 
         # change working dir to this file location to load npz files. Then switch back

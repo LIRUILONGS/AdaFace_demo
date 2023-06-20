@@ -8,7 +8,7 @@ from tqdm import tqdm
 import random
 from datetime import datetime
 mtcnn_model = mtcnn.MTCNN(device='cpu', crop_size=(112, 112))
-
+#mtcnn_model = mtcnn.MTCNN(device='cpu', crop_size=(224, 224))
 def add_padding(pil_img, top, right, bottom, left, color=(0,0,0)):
     width, height = pil_img.size
     new_width = width + right + left
