@@ -82,6 +82,8 @@ statedict = torch.load(adaface_models[architecture])['state_dict']
 statedict = torch.load(adaface_models[architecture], map_location=torch.device('cpu'))['state_dict']
 ```
 
+
+
 之后需要下载对应的模型文件，可以做 github 看到。放到指定位置`pretrained/adaface_ir101_webface12m.ckpt`就可以执行了，这里不多讲
 
 

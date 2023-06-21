@@ -39,6 +39,7 @@ class AdafaceRecognition:
     }
 
 
+
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
@@ -51,7 +52,7 @@ class AdafaceRecognition:
         @Version :   3.0
         @Desc    :   初始化处理，加载模型，特征文件加载
         """
-        # 模型加载
+        
         self.adaface_model_name = adaface_model_name
         self.db_path = db_path
         self.architecture =architecture
@@ -107,7 +108,7 @@ class AdafaceRecognition:
         except Exception :
             #print("识别图片预处理异常,图片自动忽略")
             pass    
-        return tensor    
+        return tensor                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 
     def read_vector_pkl(self):
         """
@@ -204,7 +205,7 @@ class AdafaceRecognition:
         return self
 
 
-    def find_face(self,test_image_path,threshold=0.5,stranger_discard_threshold=0.1  ):
+    def find_face(self,test_image_path,threshold=0.5  ):
         """
         @Time    :   2023/06/16 14:02:52
         @Author  :   liruilonger@gmail.com
@@ -227,7 +228,7 @@ class AdafaceRecognition:
         else:
             return False,0
 
-    def find_faces(self,test_image_path,threshold=0.5):
+    def find_faces(self,test_image_path,threshold=0.5,discard=True,stranger_discard_threshold=0.3):
         """
         @Time    :   2023/06/18 06:16:19
         @Author  :   liruilonger@gmail.com
@@ -261,10 +262,15 @@ class AdafaceRecognition:
                     source_representation = instance[f"{self.adaface_model_name}_representation"]
                     ten = AdafaceRecognition.findCosineDistance(source_representation,test_representation)
                     reset[ten.item()]= instance["identity"]        
-                    # 如果得分大于阈值`0.3`个单位，则比较完成，跳出循环
+                    # 如果得分大于阈值`0.3`个单位，则跳出循环，不寻找最大得分
                     if threshold + (0.3 * threshold)  < ten:
                         break
                 cosine_similarity =  max(reset.keys())
+                # 是否抛弃误差数据
+                print(cosine_similarity,reset[cosine_similarity],"数据：")
+                if discard and (cosine_similarity < threshold) and (threshold -  cosine_similarity <=  stranger_discard_threshold) :
+                    pass
+                    continue
                 res.append((cosine_similarity > threshold ,cosine_similarity,reset[cosine_similarity],img,test_representation))         
             return res
         else:
@@ -360,7 +366,7 @@ class AdafaceRecognition:
                     mininterval=0.1, 
                     maxinterval=1.0, 
                     smoothing=0.01,                 
-                    colour='#f6b26b',
+                    colour='red',
                     postfix="👽👽")
                 
                 for i in pbar:
@@ -585,7 +591,7 @@ class AdafaceRecognition:
             for index in pbar:
                     path = file_paths[index]
                     # 0.18               
-                    data_f_r = ada.find_faces(path,0.4)
+                    data_f_r = ada.find_faces(path,0.5)
                     pbar = tqdm(
                         range(0, len(data_f_r)),
                         desc="识别结果归类：🎉🎉🎉 ",

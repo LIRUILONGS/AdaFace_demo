@@ -137,7 +137,8 @@ def get_represent(path):
     aligned_rgb_img = align.get_aligned_face(path)
     bgr_tensor_input = to_input(aligned_rgb_img)
     if bgr_tensor_input is not None:
-        feature, _ = model(bgr_tensor_input)
+        with torch.no_grad():
+            encoding, _ = model(bgr_tensor_input)
     else:
        print(f"无法提取脸部特征向量{path}")     
     return feature
