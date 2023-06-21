@@ -277,7 +277,8 @@ class AdafaceRecognition:
             return  feature
         bgr_tensor_input = self.to_input(aligned_rgb_img)
         if bgr_tensor_input is not None:
-            feature, _ = self.model(bgr_tensor_input)
+            with torch.no_grad():
+                feature, _ = self.model(bgr_tensor_input)
         else:
             #print(f"无法提取脸部特征向量: {path}")  
             pass 
@@ -306,7 +307,8 @@ class AdafaceRecognition:
             for aligned_rgb_img in aligned_rgb_imgs:
                 bgr_tensor_input = self.to_input(aligned_rgb_img)
                 if bgr_tensor_input is not None:
-                    feature, _ = self.model(bgr_tensor_input)
+                    with torch.no_grad():
+                        feature, _ = self.model(bgr_tensor_input)
                     features_t.append((feature,aligned_rgb_img))
                 else:
                     #print(f"无法提取脸部特征向量: {path}")  

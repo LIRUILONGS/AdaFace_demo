@@ -16,7 +16,7 @@ def load_pretrained_model(architecture='ir_101'):
     assert architecture in adaface_models.keys()
     model = net.build_model(architecture)
     statedict = torch.load(
-        adaface_models[architecture], map_location=torch.device('cpu'))['state_dict']
+    adaface_models[architecture], map_location=torch.device('cpu'))['state_dict']
     model_statedict = {key[6:]: val for key,
                        val in statedict.items() if key.startswith('model.')}
     model.load_state_dict(model_statedict)
