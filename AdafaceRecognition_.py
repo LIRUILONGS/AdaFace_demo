@@ -544,7 +544,7 @@ class AdafaceRecognition:
         @Time    :   2023/06/19 23:26:20
         @Author  :   liruilonger@gmail.com
         @Version :   1.0
-        @Desc    :   获取目录图片文件的MD5
+        @Desc    :   None
                      Args:
                        dir_path: 目录路径
                      Returns:
@@ -558,17 +558,6 @@ class AdafaceRecognition:
     
     @staticmethod
     def rm_suffix_file(dir_path,suffix): 
-        """
-        @Time    :   2023/06/27 23:18:51
-        @Author  :   liruilonger@gmail.com
-        @Version :   1.0
-        @Desc    :   删除指定后缀的文件
-                     Args:
-                       
-                     Returns:
-                       void
-        """
-        
         file_paths = glob.glob(os.path.join(dir_path, f"*.{suffix}"))
         for file_path in file_paths:
            os.remove(file_path)
@@ -604,7 +593,7 @@ class AdafaceRecognition:
             for index in pbar:
                     path = file_paths[index]
                     # 0.18               
-                    data_f_r = ada.find_faces(path,0.5)
+                    data_f_r = ada.find_faces(path,0.26)
                     pbar = tqdm(
                         range(0, len(data_f_r)),
                         desc="识别结果归类：🎉🎉🎉 ",
@@ -617,7 +606,6 @@ class AdafaceRecognition:
                         b,c,r,i,t = data_f_r[index]
                         # 识别成功
                         if b:
-                            # 识别结果去重处理
                             if r not in faces:
                                 faces[r]=c
                                 AdafaceRecognition.marge(r,i,"./")
