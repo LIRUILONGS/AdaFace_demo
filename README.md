@@ -364,3 +364,10 @@ https://github.com/mk-minchul/AdaFace
 ***
 
 © 2018-2023 liruilonger@gmail.com, All rights reserved. 保持署名-非商用-相同方式共享(CC BY-NC-SA 4.0)
+
+
+----
+
+人脸采集： 三个进程，12C 饱和，即每个进程,2G 显存，CPU 4C，内存 0.5G
+
+
