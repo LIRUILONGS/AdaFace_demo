@@ -136,7 +136,7 @@ def build_vector_db(self):
     cpu_count = multiprocessing.cpu_count()
     print(cpu_count,len(employees) )
     # 这里的 4 为 单个进程需要的核数
-    ps = cpu_count// 3
+    ps = cpu_count// 4
     chunk_size = len(employees) // ps
     print(chunk_size) 
     image_chunks = [employees[i:i+chunk_size] for i in range(0, len(employees), chunk_size)]
@@ -150,7 +150,7 @@ def build_vector_db(self):
     with ThreadPoolExecutor(max_workers=ps,thread_name_prefix="face_thread_") as executor:
         futures = [executor.submit(face_detector, *params) for params in temp_employees]
         results = [future.result() for future in futures]
-        print(futures)
+        print(results)
 
 
 def face_detector(self,employees):
@@ -229,8 +229,11 @@ def get_represents(self, path):
                 bgr_tensor_input = to_input(self,aligned_rgb_img)
                 if bgr_tensor_input is not None:
                     with torch.no_grad():
-                        feature, _ = self.model(bgr_tensor_input)
-
+                        try:
+                            feature, _ = self.model(bgr_tensor_input)
+                        except:
+                            print("图片质量问题，提取特征失败，")
+                            continue
                     features_t.append((feature, aligned_rgb_img))
                 else:
                     # print(f"无法提取脸部特征向量: {path}")
@@ -238,15 +241,30 @@ def get_represents(self, path):
         return features_t
     
 
-def face_detector_warpper(cls_instance, employees):
-    print("face_detector_warpper")
-    return cls_instance.face_detector(employees)
+def get_face_detector(image_path,adaface_model_name="adaface_model", face_image="img_dir"):
+    """
+    @Time    :   2023/06/28 22:29:19
+    @Author  :   liruilonger@gmail.com
+    @Version :   1.0
+    @Desc    :   None
+                 Args:
+                   
+                 Returns:
+                   void
+    """
+    
+    face_c = AdafaceFaceCollection(face_path=image_path,adaface_model_name=adaface_model_name,face_image=face_image)
+    face_c.rc.clear()
+    build_vector_db(face_c)
+    
  
+
+
+
 
 if __name__ == '__main__':
     test_image_path = 'W:\python_code\deepface\\temp\\temp'
-    face_c = AdafaceFaceCollection(face_path=test_image_path, adaface_model_name="adaface_model", face_image="img_dir")
-    test_image_path = 'W:\python_code\deepface\\temp\\temp'
+    get_face_detector(test_image_path)
+    
 
-    build_vector_db(face_c)
-    #face_c.test()
+    

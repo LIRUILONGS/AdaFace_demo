@@ -41,14 +41,14 @@ class RedisClient:
         self.r.rpush(key, value)
         return self.r 
     
-    def lpop(self, key, value):
-        self.r.lpop(key, value)
-        return self.r 
+    def lpop(self, key ):
+        
+        return self.r.lpop(key)
         
 
-    def rpop(self, key, value):
-        self.r.rpop(key, value)
-        return self.r 
+    def rpop(self, key):
+       
+        return  self.r.rpop(key)
 
     def lrange(self, key, start, end):
         return self.r.lrange(key, start, end)
@@ -82,8 +82,8 @@ class RedisClient:
             return self.r
 
 
-    def hgetall(self, key):
-        return self.r.hgetall(key)
+    def hgetall(self):
+        return self.r.hgetall()
 
 # 有序集合
     def zadd(self, key, score, member):
