@@ -142,9 +142,9 @@ def build_vector_db(self):
     image_chunks = [employees[i:i+chunk_size] for i in range(0, len(employees), chunk_size)]
     temp_employees = []
     for i in range(len(image_chunks)):
-      flattened_list = [item for sublist in image_chunks[i:] +image_chunks[:i] for item in sublist]
-      temp_employees.append((self,flattened_list)) 
-       
+    #  flattened_list = [item for sublist in image_chunks[i:] +image_chunks[:i] for item in sublist]
+      temp_employees.append((self,image_chunks[i])) 
+    #print(ps,len(image_chunks))   
     
 
     with ThreadPoolExecutor(max_workers=ps,thread_name_prefix="face_thread_") as executor:

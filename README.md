@@ -370,4 +370,17 @@ https://github.com/mk-minchul/AdaFace
 
 人脸采集： 三个进程，12C 饱和，即每个进程,2G 显存，CPU 4C，内存 0.5G
 
+测试数据：
 
+
+
+GPU: 
++ CPU12C(Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz)
++ GPU(英伟达 3360 8.5 算力，12G 显存) 
++ 处理速度： 21968/21968 [2:59:19<00:00,  2.04it/s,  ⚒️]
+
+CPU:
++ CPU12C(Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz)
++ 处理速度： 21968/21968 [3:11:11<00:00,  1.92it/s,  ⚒️]
+
++ 2个小时
