@@ -57,7 +57,7 @@ class AdafaceBuildVectorPkl:
         self.features = []
         file_name = f"representations_adaface_{adaface_model_name}.pkl"
         self.file_name = file_name.replace("-", "_").lower()
-        self.load_pretrained_model().build_vector_pkl()
+        self.load_pretrained_model()
 
 
     def load_pretrained_model(self):
@@ -80,7 +80,7 @@ class AdafaceBuildVectorPkl:
                            val in statedict.items() if key.startswith('model.')}
         self.model.load_state_dict(model_statedict)
         self.model.eval()
-        print("😍😊😍😊😍😊😍😊😍😊 模型 加载完成")
+        print("😍😊 模型 加载完成")
         return self
 
 
@@ -127,20 +127,21 @@ class AdafaceBuildVectorPkl:
             md5_file = f"{self.db_path}/{il}.md5"
     
             if path.exists(md5_file):
-               # 判断 MD5
-               md5_old_str = ''
-               with open(md5_file,'r') as f:
+                # 判断 MD5
+                md5_old_str = ''
+                with open(md5_file,'r') as f:
                     md5_old_str = f.read()
-               md5_new_str = AdafaceBuildVectorPkl.get_dir_md5(self.db_path)
-               if md5_old_str != md5_new_str:
-                   self.build_vector_pkl_file()      
+                md5_new_str = AdafaceBuildVectorPkl.get_dir_md5(self.db_path)
+                if md5_old_str != md5_new_str:
+                   self.build_vector_pkl_file()   
+                else:
+                    print(f"😍😊人脸库数据未发生变化，特征文件已生成！{self.db_path}/{self.file_name}")    
             else:
                # 校验文件不存在
                self.build_vector_pkl_file() 
         else:
             # 特征文件不存在
             self.build_vector_pkl_file()
-        print("特征文件以存在！")    
         return self    
     
 
@@ -169,6 +170,8 @@ class AdafaceBuildVectorPkl:
         for index in pbar:
             employee = employees[index]
             img_representation = self.get_represent(employee)
+            if img_representation is None:
+                raise ValueError(f"图像没有任何人脸在 {employee} ! 验证此路径中是否存文件是否有人脸。", )
             instance = []
             instance.append(employee)
             instance.append(img_representation)
@@ -177,7 +180,7 @@ class AdafaceBuildVectorPkl:
         # 保存特征文件 
         with open(f"{self.db_path}/{self.file_name}", "wb") as f:
             pickle.dump(representations, f)
-        print(f"😍😊😍😊😍😊😍😊😍😊 特征文件 {self.db_path}/{self.file_name} 构建完成")    
+        print(f"😍😊😍 特征文件 {self.db_path}/{self.file_name} 构建完成")    
         # 保存 人脸数和对应的 文件的 MD5 值
 
         md5_file = f"{self.db_path}/{el}.md5"
@@ -185,7 +188,7 @@ class AdafaceBuildVectorPkl:
         AdafaceBuildVectorPkl.rm_suffix_file(self.db_path,"md5")    
         with open(md5_file,'w') as f:
             f.write(md5)  
-        print(f"😍😊😍😊😍😊😍😊😍😊 校验文件 {md5_file} 生成完成")
+        print(f"😍😊😍 校验文件 {md5_file} 生成完成")
         return self
 
     def get_represent(self,path):
@@ -218,6 +221,20 @@ class AdafaceBuildVectorPkl:
             #print(f"无法提取脸部特征向量: {path}")  
             pass 
         return feature
+    
+    def read_vector_pkl(self):
+        """
+        @Time    :   2023/06/16 12:10:47
+        @Author  :   liruilonger@gmail.com
+        @Version :   1.0
+        @Desc    :   读取特征向量文件
+        """
+
+        with open(f"{self.db_path}/{self.file_name}", "rb") as f:
+                representations = pickle.load(f)
+        self.df = pd.DataFrame(representations, columns=["identity", f"{self.adaface_model_name}_representation"])
+        print("😍😊😍😊😍😊😍😊😍😊 特征文件  加载完成")
+        return self
     
     
     @staticmethod
@@ -266,11 +283,79 @@ class AdafaceBuildVectorPkl:
         for file_path in file_paths:
            os.remove(file_path)
 
+def build_vector_Pkl_file(db_path="face_alignment/test",adaface_model_name="adaface_model"):
+    """
+    @Time    :   2023/07/03 21:55:16
+    @Author  :   liruilonger@gmail.com
+    @Version :   1.0
+    @Desc    :   人脸库构建
+                 Args:
+                 db_path：人脸库位置
+                 adaface_model_name：  特征文件名字
+                 Returns:
+                   void
+    """
+    ada =  AdafaceBuildVectorPkl(db_path,adaface_model_name)
+    ada.build_vector_pkl()
+    # 特征值检查
+     
+    for _, instance in ada.read_vector_pkl().df.iterrows():
+        source_representation = instance[f"{ada.adaface_model_name}_representation"]
+        if source_representation is None:
+            print(f"{instance}特征数据提取失败，请排查照片")
+
+
+
+def check_buildVectorPkl():
+    """
+    @Time    :   2023/07/05 04:39:11
+    @Author  :   liruilonger@gmail.com
+    @Version :   1.0
+    @Desc    :   对特征文件进行校验
+                 Args:
+                   
+                 Returns:
+                   void
+    """
     
+    import shutil
+    ada =  AdafaceBuildVectorPkl(db_path="face_alignment/emp",adaface_model_name="adaface_model")
+    for _, instance in ada.read_vector_pkl().df.iterrows():
+        source_representation = instance[f"{ada.adaface_model_name}_representation"]
+        if source_representation is None:
+            print(f"{instance}特征数据提取失败，请排查照片")
+            file_path = instance['identity']
+            if os.path.exists(file_path):
+                dir_path = os.path.dirname(file_path)
+                shutil.rmtree(dir_path)
+
+def face_slicing(im_path,ou_path='./temp/'):
+    """
+    @Time    :   2023/07/05 01:51:38
+    @Author  :   liruilonger@gmail.com
+    @Version :   1.0
+    @Desc    :   对人脸照片进行人脸切片
+                 Args:
+                   
+                 Returns:
+                   void
+    """
+    for path in  list(paths.list_images(im_path)):
+        faces = align.get_aligned_face(path,None,1)
+        print(f"人脸切片： {path}")
+        for _,face in enumerate(faces):
+            face.save(ou_path+ os.path.basename(path)) 
+
+
+
+
+
+
 if __name__ == '__main__':
 
 
-    AdafaceBuildVectorPkl(db_path="face_alignment/test",adaface_model_name="adaface_model")
+    build_vector_Pkl_file(db_path="face_alignment/emp",adaface_model_name="adaface_model")
+    #face_slicing("C:\\Users\\liruilong\\Documents\\GitHub\\AdaFace_demo\\face_alignment\\emp")
 
     #AdafaceRecognition.single_re(ada,test_image_path)
     

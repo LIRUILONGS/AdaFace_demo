@@ -44,8 +44,11 @@ class MTCNN():
         os.chdir(cwd)
 
     def align(self, img):
+        # 函数检测图像中的人脸位置和关键点
         _, landmarks = self.detect_faces(img, self.min_face_size, self.thresholds, self.nms_thresholds, self.factor)
+        # 提取出人脸的五个关键点坐标
         facial5points = [[landmarks[0][j], landmarks[0][j + 5]] for j in range(5)]
+        # 对图像进行人脸对齐
         warped_face = warp_and_crop_face(np.array(img), facial5points, self.refrence, crop_size=self.crop_size)
         return Image.fromarray(warped_face)
 
@@ -96,8 +99,7 @@ class MTCNN():
             min_length *= factor
             factor_count += 1
 
-        # STAGE 1
-
+        # STAGE 1 使用P-Net模型在不同尺度的图像上运行，得到候选框（bounding boxes）
         # it will be returned
         bounding_boxes = []
 

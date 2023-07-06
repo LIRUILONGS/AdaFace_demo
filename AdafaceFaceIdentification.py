@@ -23,7 +23,7 @@ from PIL import Image
 import face_yaw_pitc_roll
 import glob
 from redis_uits import RedisClient
-
+import utils
 
 class AdafaceFaceIdentification:
     __instance = None
@@ -119,40 +119,10 @@ class AdafaceFaceIdentification:
     
     
     
-    @staticmethod
-    def marge(m1,m2,path):
-        """
-        @Time    :   2023/06/17 23:00:32
-        @Author  :   liruilonger@gmail.com
-        @Version :   1.0
-        @Desc    :   图片合并
-        """
-        if isinstance(m1, Image.Image):
-            image1 = m1
-        else:
-            image1 = Image.open(m1)
-
-        if isinstance(m2, Image.Image):
-            image2 = m2
-        else:
-            image2 = Image.open(m2)
-        
-        # 获取第一张图片的大小
-        width1, height1 = image1.size
-        # 获取第二张图片的大小
-        width2, height2 = image2.size
-        # 创建一个新的画布，大小为两张图片的宽度之和和高度的最大值
-        new_image = Image.new("RGB", (width1 + width2, max(height1, height2)))
-        # 将第一张图片粘贴到画布的左侧
-        new_image.paste(image1, (0, 0))
-        # 将第二张图片粘贴到画布的右侧
-        new_image.paste(image2, (width1, 0))
-        # 保存拼接后的图片
-        
-        new_image.save(path+os.path.basename(m1))    
+   
 
 
-def multiplayer_re(ada,threshold=0.5,discard=True,stranger_discard_threshold=0.4,uni_threshold=0.5):
+def multiplayer_re(ada,threshold=0.39,discard=False,stranger_discard_threshold=0.4,uni_threshold=0.5):
     """
     @Time    :   2023/06/18 06:19:17
     @Author  :   liruilonger@gmail.com
@@ -167,16 +137,18 @@ def multiplayer_re(ada,threshold=0.5,discard=True,stranger_discard_threshold=0.4
     # 识别出的人脸数据 
     faces ={}
     while True:
-        print("👻👻👻👻🧟‍♀️🧟‍♀️🧟‍♀️🧟‍♀️😀😀😀😀🥶😡🤢😈👽😹🙈🦝 ",ada.adaface_model_name,time.time())
+        
         face_rs =  ada.rc.rpop(ada.adaface_model_name)
-
         if face_rs is None:
+            print(f"😈😈 特征队列 {ada.adaface_model_name} 数据为空",time.time())
             continue
         else:
             reset = {}
             test_representation,i_img = pickle.loads(face_rs)
             for _, instance in ada.df.iterrows():
                 source_representation = instance[f"{ada.adaface_model_name}_representation"]
+                if source_representation is None:
+                    continue
                 ten = findCosineDistance_CPU(source_representation,test_representation)
                 reset[ten.item()]= instance["identity"]        
                 # 如果得分大于阈值`0.3`个单位，则跳出循环，不寻找最大得分
@@ -184,45 +156,42 @@ def multiplayer_re(ada,threshold=0.5,discard=True,stranger_discard_threshold=0.4
                     break
                 cosine_similarity =  max(reset.keys()) #0.4
                 # 是否抛弃误差数据
-                print(cosine_similarity,reset[cosine_similarity],"数据：")
                 if discard and (cosine_similarity < threshold) and ( (cosine_similarity <= 0 )or (threshold -  cosine_similarity <=  stranger_discard_threshold)) :
                     pass
                     continue
             # [是否识别到，最大相似度得分，识别到的人路径，人脸image对象，特征值]    
             b,c,r,i,t =(cosine_similarity > threshold ,cosine_similarity,reset[cosine_similarity],i_img,test_representation)
-                # 识别成功
+            print("🤢🤢 识别结果",os.path.basename(r)," 最大相似度得分：",cosine_similarity)
+            # 识别成功
             if b:
                 if r not in faces:
                     faces[r]=c
-                    ada.rc.hset("face_Y",r,pickle.dumps(i))
-                    AdafaceFaceIdentification.marge(r,i,"./")
+                    b64 = utils.get_marge_image_to_base64(r,i,"./")
+                    ada.rc.hset("face_Y",r,b64)
+                    print("👻👻 识别到相似特征",r,time.time())    
+                    
                 else:
                     if faces[r] < c: 
-                        ada.rc.hset("face_Y",r,pickle.dumps(i))
-                        AdafaceFaceIdentification.marge(r,i,"./")    
+                        b64 = utils.get_marge_image_to_base64(r,i,"./")
+                        ada.rc.hset("face_Y",r,b64)
+                        print("👻👻 识别到相似特征",r,time.time())            
             else:
-                if c < 0.1:
-                    bo,tt  = ada.stranger_weight_removals(t,0.2)
+                # 陌生人处理
+                if c < 0.2:   
+                    bo,tt  = ada.stranger_weight_removals(t,0.35)
                     if bo:
+                        # 陌生人存在直接跳过
                         continue
                     else:
                         numpy_image = np.array(i)
                         cv2_image = cv2.cvtColor(numpy_image, cv2.COLOR_RGB2BGR)
-                        cv2.imwrite(str(tt) +".jpg", cv2_image)  
-                        ada.rc.hset("face_N",c,pickle.dumps(i))  
+                        boo, img = face_yaw_pitc_roll.is_gesture(cv2_image,40)
+                        if boo:
+                            b64 = utils.get_Image_to_base64(i)
+                            ada.rc.hset("face_N",str(c)+'.jpg',b64)
+                            print("👽👽 陌生人",time.time())   
+                
 
-                # 陌生人处理
-                #numpy_image = np.array(i)
-                #cv2_image = cv2.cvtColor(numpy_image, cv2.COLOR_RGB2BGR)
-                #boo, img = face_yaw_pitc_roll.is_gesture(cv2_image,10)
-                #if boo:
-                #    # 0.15
-                #    bo,tt  = ada.stranger_weight_removals(t,0.2)
-                #    if bo:
-                #        continue
-                #    else:
-                #        cv2.imwrite(str(tt) +".jpg", cv2_image)  
-                #        ada.rc.hset("face_N",c,pickle.dumps(i))  
 
 
 
@@ -265,15 +234,16 @@ def findCosineDistance_GPU(source_representation, test_representation):
     return model(source_representation, test_representation)
 
 
+def comparison(db_path="face_alignment/test",adaface_model_name="adaface_model",threshold=0.5):
+    ada =  AdafaceFaceIdentification(db_path,adaface_model_name)
+    multiplayer_re(ada,threshold)
 
 
 
 if __name__ == '__main__':
 
 
-    ada =  AdafaceFaceIdentification(db_path="face_alignment/test",adaface_model_name="adaface_model")
-
-    multiplayer_re(ada)
+    comparison(db_path="face_alignment/emp",adaface_model_name="adaface_model",threshold=0.30)
     
                
         

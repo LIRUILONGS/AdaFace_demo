@@ -82,8 +82,8 @@ class RedisClient:
             return self.r
 
 
-    def hgetall(self):
-        return self.r.hgetall()
+    def hgetall(self,key):
+        return self.r.hgetall(key)
 
 # 有序集合
     def zadd(self, key, score, member):

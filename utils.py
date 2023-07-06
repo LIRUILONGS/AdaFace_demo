@@ -25,6 +25,8 @@ from io import BytesIO
 import zipfile
 import hashlib
 from imutils import paths
+import glob
+from PIL import Image
 
 
 
@@ -336,3 +338,94 @@ def get_dir_md5(dir_path):
     for img_path  in paths.list_images(dir_path):
         md5.update(get_file_md5(img_path).encode())
     return md5.hexdigest()
+
+def rm_suffix_file(dir_path,suffix="jpg"): 
+    """
+    @Time    :   2023/06/27 23:18:51
+    @Author  :   liruilonger@gmail.com
+    @Version :   1.0
+    @Desc    :   删除指定后缀的文件
+                 Args:
+                   
+                 Returns:
+                   void
+    """
+    if isinstance(dir_path, str): 
+        file_paths = glob.glob(os.path.join(dir_path, f"*.{suffix}"))
+    else:
+        file_paths = dir_path
+    for file_path in file_paths:
+        os.remove(file_path)
+
+
+
+def get_marge_image_to_base64(m1,m2,path,is_bash64=True):
+    """
+    @Time    :   2023/06/17 23:00:32
+    @Author  :   liruilonger@gmail.com
+    @Version :   1.0
+    @Desc    :   Image.Image 图片合并并转化为 Base64
+    """
+    if isinstance(m1, Image.Image):
+        image1 = m1
+    else:
+        image1 = Image.open(m1)
+    if isinstance(m2, Image.Image):
+        image2 = m2
+    else:
+        image2 = Image.open(m2)
+    
+    # 获取第一张图片的大小
+    width1, height1 = image1.size
+    # 获取第二张图片的大小
+    width2, height2 = image2.size
+    # 创建一个新的画布，大小为两张图片的宽度之和和高度的最大值
+    new_image = Image.new("RGB", (width1 + width2, max(height1, height2)))
+    # 将第一张图片粘贴到画布的左侧
+    new_image.paste(image1, (0, 0))
+    # 将第二张图片粘贴到画布的右侧
+    new_image.paste(image2, (width1, 0))
+    if is_bash64:
+        return get_Image_to_base64(new_image)
+    else:
+        new_image.save(path+os.path.basename(m1)) 
+
+def get_Image_to_base64(image_):
+    """
+    @Time    :   2023/07/03 06:24:15
+    @Author  :   liruilonger@gmail.com
+    @Version :   1.0
+    @Desc    :   Image.Image 图片对象转化为 Base64
+                 Args:
+                   
+                 Returns:
+                   void
+    """
+    if isinstance(image_, Image.Image):
+        image = image_
+    else:
+        image = Image.open(image_)
+
+    image_stream = BytesIO()
+    image.save(image_stream,format='PNG')
+    image_stream.seek(0)
+    base64_data = base64.b64encode(image_stream.read()).decode('utf-8')
+    return base64_data
+
+
+def save_image_from_base64(b64_str, op,fn):
+    """
+    @Time    :   2023/07/04 00:01:36
+    @Author  :   liruilonger@gmail.com
+    @Version :   1.0
+    @Desc    :   b64 保存为图片
+                 Args:
+                   
+                 Returns:
+                   void
+    """
+    print(op,fn)
+    image_data = base64.b64decode(b64_str)
+    image = Image.open(BytesIO(image_data))
+    
+    image.save(os.path.join(op, os.path.basename(fn)))

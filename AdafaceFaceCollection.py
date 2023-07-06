@@ -42,7 +42,7 @@ import threading
 
 
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 class AdafaceFaceCollection:
     __instance = None
@@ -101,7 +101,7 @@ class AdafaceFaceCollection:
         return self
 
 
-def to_input(self, pil_rgb_image):
+def to_input(pil_rgb_image):
     """
     @Time    :   2023/06/17 22:42:30
     @Author  :   liruilonger@gmail.com
@@ -124,36 +124,38 @@ def to_input(self, pil_rgb_image):
     return tensor
 
 
-def build_vector_db(self):
+def build_vector_db(this):
     """
     @Time    :   2023/06/19 23:02:16
     @Author  :   liruilonger@gmail.com
     @Version :   1.0
     @Desc    :   提取人脸特征到数据库
     """
-    employees = list(paths.list_images(self.face_path))
-    # 根据CPU 核数对文件列表做处理
-    cpu_count = multiprocessing.cpu_count()
-    print(cpu_count,len(employees) )
-    # 这里的 4 为 单个进程需要的核数
-    ps = cpu_count// 4
-    chunk_size = len(employees) // ps
-    print(chunk_size) 
-    image_chunks = [employees[i:i+chunk_size] for i in range(0, len(employees), chunk_size)]
-    temp_employees = []
-    for i in range(len(image_chunks)):
-    #  flattened_list = [item for sublist in image_chunks[i:] +image_chunks[:i] for item in sublist]
-      temp_employees.append((self,image_chunks[i])) 
-    #print(ps,len(image_chunks))   
-    
-
-    with ThreadPoolExecutor(max_workers=ps,thread_name_prefix="face_thread_") as executor:
-        futures = [executor.submit(face_detector, *params) for params in temp_employees]
-        results = [future.result() for future in futures]
-        print(results)
+    employees = list(paths.list_images(this.face_path))
+    if employees is not None:    
+        # 根据CPU 核数对文件列表做处理
+        cpu_count = multiprocessing.cpu_count()
+        # 这里的 4 为 单个进程需要的核数
+        ps = cpu_count// 4
+        chunk_size = len(employees) // ps
+        image_chunks = [employees[i:i+chunk_size] for i in range(0, len(employees), chunk_size)]
+        temp_employees = []
+        for i in range(len(image_chunks)):
+        #  flattened_list = [item for sublist in image_chunks[i:] +image_chunks[:i] for item in sublist]
+          print(len(image_chunks[i]))
+          temp_employees.append((this,image_chunks[i])) 
+        #print(ps,len(image_chunks))   
 
 
-def face_detector(self,employees):
+        with ThreadPoolExecutor(max_workers=ps,thread_name_prefix="face_thread_") as executor:
+            futures = [executor.submit(face_detector, *params) for params in temp_employees]
+            results = [future.result() for future in futures]
+        return employees    
+    else:
+        return []        
+
+
+def face_detector(this,employees):
         """
         @Time    :   2023/06/28 05:48:12
         @Author  :   liruilonger@gmail.com
@@ -167,7 +169,7 @@ def face_detector(self,employees):
 
         el = len(employees)
         if el == 0:
-            raise ValueError("没有任何图像在  ", self.face_path, "  文件夹! 验证此路径中是否存在 .jpg 或 .png 文件。")
+            raise ValueError("没有任何图像在  ", this.face_path, "  文件夹! 验证此路径中是否存在 .jpg 或 .png 文件。")
         pbar = tqdm(
             range(0, el),
             desc="采集特征中: "+ threading.current_thread().name +"：⚒️⚒️⚒️",
@@ -187,13 +189,13 @@ def face_detector(self,employees):
                 continue
             # 如果处理过直接跳出去
             if md5_str is not None:
-                if self.rc.sismember(self.face_image, md5_str):
+                if this.rc.sismember(this.face_image, md5_str):
                     print(f"处理过的图片：{employee}")
                     continue
                 else:
-                    self.rc.sadd(self.face_image, md5_str)
+                    this.rc.sadd(this.face_image, md5_str)
 
-            img_representation = get_represents(self,employee)
+            img_representation = get_represents(this,employee)
             if img_representation is not []:
                 pbar = tqdm(
                     range(0, len(img_representation)),
@@ -202,11 +204,11 @@ def face_detector(self,employees):
                     postfix="🔬🔬")
                 for i in pbar:
                     my_tuple = img_representation[i]
-                    self.rc.rpush(self.adaface_model_name, (pickle.dumps(my_tuple)))
+                    this.rc.rpush(this.adaface_model_name, (pickle.dumps(my_tuple)))
 
-        return self
+        return this
 
-def get_represents(self, path):
+def get_represents(this, path):
         """
         @Time    :   2023/06/18 06:03:09
         @Author  :   liruilonger@gmail.com
@@ -226,11 +228,11 @@ def get_represents(self, path):
             return features_t
         if aligned_rgb_imgs is not None:
             for aligned_rgb_img in aligned_rgb_imgs:
-                bgr_tensor_input = to_input(self,aligned_rgb_img)
+                bgr_tensor_input = to_input(aligned_rgb_img)
                 if bgr_tensor_input is not None:
                     with torch.no_grad():
                         try:
-                            feature, _ = self.model(bgr_tensor_input)
+                            feature, _ = this.model(bgr_tensor_input)
                         except:
                             print("图片质量问题，提取特征失败，")
                             continue
@@ -241,21 +243,37 @@ def get_represents(self, path):
         return features_t
     
 
-def get_face_detector(image_path,adaface_model_name="adaface_model", face_image="img_dir"):
+def get_face_detector(image_path,adaface_model_name="adaface_model", face_image="img_dir",is_del=False):
     """
     @Time    :   2023/06/28 22:29:19
     @Author  :   liruilonger@gmail.com
     @Version :   1.0
-    @Desc    :   None
+    @Desc    :   暴露出去的方法
                  Args:
-                   
+                 image_path: 需要识别数据
+                 adaface_model_name： 模型名字
+                 face_image： 存放照片 md5 key
                  Returns:
-                   void
+                   
     """
     
     face_c = AdafaceFaceCollection(face_path=image_path,adaface_model_name=adaface_model_name,face_image=face_image)
     face_c.rc.clear()
-    build_vector_db(face_c)
+    t = 2
+    while True:
+        ti =  build_vector_db(face_c)
+        if ti == []:
+            # 当前目录数据为空时，循环处理，每次间隔2的ti幂次
+            t = t**2
+            print(f"当前目录数据为空时，循环处理，每次间隔 {t} 的 2 幂次")
+            time.sleep(t) 
+        else:
+            t = 2     
+        if is_del:
+            utils.rm_suffix_file(ti)
+
+        
+
     
  
 
@@ -263,7 +281,7 @@ def get_face_detector(image_path,adaface_model_name="adaface_model", face_image=
 
 
 if __name__ == '__main__':
-    test_image_path = 'W:\python_code\deepface\\temp\\temp'
+    test_image_path = 'W:\\cack_20230522'
     get_face_detector(test_image_path)
     
 

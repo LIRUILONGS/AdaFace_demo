@@ -1,0 +1,350 @@
+😍😊😍😊😍😊😍😊😍😊 特征文件  加载完成
+identity                        face_alignment/emp\丁一博\员工照片-丁一博.jpg
+adaface_model_representation                                   None
+Name: 0, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\乌力吉巴雅尔\员工照片-乌力吉巴雅尔.jpg
+adaface_model_representation                                         None
+Name: 10, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\乌达木\员工照片-乌达木.jpg
+adaface_model_representation                                   None
+Name: 12, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\于书博\员工照片-于书博.jpg
+adaface_model_representation                                   None
+Name: 20, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\付凯旭\员工照片-付凯旭.jpg
+adaface_model_representation                                   None
+Name: 36, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\任桃\员工照片-任桃.jpg
+adaface_model_representation                                 None
+Name: 51, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\任达为\员工照片-任达为.jpg
+adaface_model_representation                                   None
+Name: 56, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\何鑫亮\员工照片-何鑫亮.jpg
+adaface_model_representation                                   None
+Name: 67, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘伟铭\员工照片-刘伟铭.jpg
+adaface_model_representation                                   None
+Name: 108, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘坤\员工照片-刘坤.jpg
+adaface_model_representation                                 None
+Name: 117, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘孝和\员工照片-刘孝和.jpg
+adaface_model_representation                                   None
+Name: 121, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘家\员工照片-刘家.jpg
+adaface_model_representation                                 None
+Name: 126, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘庆卫\员工照片-刘庆卫.jpg
+adaface_model_representation                                   None
+Name: 132, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘思雨\员工照片-刘思雨.jpg
+adaface_model_representation                                   None
+Name: 137, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘朋飞\员工照片-刘朋飞.jpg
+adaface_model_representation                                   None
+Name: 153, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘永鹏\员工照片-刘永鹏.jpg
+adaface_model_representation                                   None
+Name: 163, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘议枫\员工照片-刘议枫.jpg
+adaface_model_representation                                   None
+Name: 186, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘鑫宇\员工照片-刘鑫宇.jpg
+adaface_model_representation                                   None
+Name: 189, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\刘雅祺\员工照片-刘雅祺.jpg
+adaface_model_representation                                   None
+Name: 196, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\卢萌悦\员工照片-卢萌悦.jpg
+adaface_model_representation                                   None
+Name: 221, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\吴文迪\员工照片-吴文迪.jpg
+adaface_model_representation                                   None
+Name: 253, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\周楚航\员工照片-周楚航.jpg
+adaface_model_representation                                   None
+Name: 274, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\夏志轲\员工照片-夏志轲.jpg
+adaface_model_representation                                   None
+Name: 288, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\夏慧\员工照片-夏慧.jpg
+adaface_model_representation                                 None
+Name: 289, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\孙哲\员工照片-孙哲.jpg
+adaface_model_representation                                 None
+Name: 323, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\孙昊楠\员工照片-孙昊楠.jpg
+adaface_model_representation                                   None
+Name: 325, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\孙明强\员工照片-孙明强.jpg
+adaface_model_representation                                   None
+Name: 326, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\孟庆勇\员工照片-孟庆勇.jpg
+adaface_model_representation                                   None
+Name: 346, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\宋浩铭\员工照片-宋浩铭.jpg
+adaface_model_representation                                   None
+Name: 365, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\崔巍\员工照片-崔巍.jpg
+adaface_model_representation                                 None
+Name: 388, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\崔秋瓶\员工照片-崔秋瓶.jpg
+adaface_model_representation                                   None
+Name: 392, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\康艳茹\员工照片-康艳茹.jpg
+adaface_model_representation                                   None
+Name: 407, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张乾\员工照片-张乾.jpg
+adaface_model_representation                                 None
+Name: 415, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张傑\员工照片-张傑.jpg
+adaface_model_representation                                 None
+Name: 424, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张宏洋\员工照片-张宏洋.jpg
+adaface_model_representation                                   None
+Name: 450, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张弛\员工照片-张弛.jpg
+adaface_model_representation                                 None
+Name: 456, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张慧芳\员工照片-张慧芳.jpg
+adaface_model_representation                                   None
+Name: 462, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张明军\员工照片-张明军.jpg
+adaface_model_representation                                   None
+Name: 472, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张树伟\员工照片-张树伟.jpg
+adaface_model_representation                                   None
+Name: 484, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张蕾\员工照片-张蕾.jpg
+adaface_model_representation                                 None
+Name: 524, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张雨星\员工照片-张雨星.jpg
+adaface_model_representation                                   None
+Name: 533, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\张静\员工照片-张静.jpg
+adaface_model_representation                                 None
+Name: 536, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\朱呈浩\员工照片-朱呈浩.jpg
+adaface_model_representation                                   None
+Name: 588, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\朱明鸿\员工照片-朱明鸿.jpg
+adaface_model_representation                                   None
+Name: 592, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李亚楠\员工照片-李亚楠.jpg
+adaface_model_representation                                   None
+Name: 609, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李伟杰\员工照片-李伟杰.jpg
+adaface_model_representation                                   None
+Name: 611, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李伟杰(1)\员工照片-李伟杰(1).jpg
+adaface_model_representation                                         None
+Name: 612, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李佗\员工照片-李佗.jpg
+adaface_model_representation                                 None
+Name: 613, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李奥\员工照片-李奥.jpg
+adaface_model_representation                                 None
+Name: 635, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李宁宁\员工照片-李宁宁.jpg
+adaface_model_representation                                   None
+Name: 641, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李小梅\员工照片-李小梅.jpg
+adaface_model_representation                                   None
+Name: 644, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李怀涛\员工照片-李怀涛.jpg
+adaface_model_representation                                   None
+Name: 652, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李敏\员工照片-李敏.jpg
+adaface_model_representation                                 None
+Name: 661, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李笑琪\员工照片-李笑琪.jpg
+adaface_model_representation                                   None
+Name: 690, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\李艺龙\员工照片-李艺龙.jpg
+adaface_model_representation                                   None
+Name: 693, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\杜晓彬\员工照片-杜晓彬.jpg
+adaface_model_representation                                   None
+Name: 715, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\杜雅娟\员工照片-杜雅娟.jpg
+adaface_model_representation                                   None
+Name: 721, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\杨乐\员工照片-杨乐.jpg
+adaface_model_representation                                 None
+Name: 724, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\松达尔\员工照片-松达尔.jpg
+adaface_model_representation                                   None
+Name: 760, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\柴国龙\员工照片-柴国龙.jpg
+adaface_model_representation                                   None
+Name: 765, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\梁宝成\员工照片-梁宝成.jpg
+adaface_model_representation                                   None
+Name: 771, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\樊崇浩\员工照片-樊崇浩.jpg
+adaface_model_representation                                   None
+Name: 775, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\欧超\员工照片-欧超.jpg
+adaface_model_representation                                 None
+Name: 781, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\段宝玉\员工照片-段宝玉.jpg
+adaface_model_representation                                   None
+Name: 788, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王之扬\员工照片-王之扬.jpg
+adaface_model_representation                                   None
+Name: 826, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王佳星\员工照片-王佳星.jpg
+adaface_model_representation                                   None
+Name: 837, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王健\员工照片-王健.jpg
+adaface_model_representation                                 None
+Name: 843, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王帅博\员工照片-王帅博.jpg
+adaface_model_representation                                   None
+Name: 882, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王志气\员工照片-王志气.jpg
+adaface_model_representation                                   None
+Name: 891, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王清\员工照片-王清.jpg
+adaface_model_representation                                 None
+Name: 927, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王炯禾\员工照片-王炯禾.jpg
+adaface_model_representation                                   None
+Name: 933, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王燕\员工照片-王燕.jpg
+adaface_model_representation                                 None
+Name: 936, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王玉粉\员工照片-王玉粉.jpg
+adaface_model_representation                                   None
+Name: 940, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王艳雪\员工照片-王艳雪.jpg
+adaface_model_representation                                   None
+Name: 961, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王霞\员工照片-王霞.jpg
+adaface_model_representation                                 None
+Name: 979, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王静(1)\员工照片-王静(1).jpg
+adaface_model_representation                                       None
+Name: 980, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\王飞飞\员工照片-王飞飞.jpg
+adaface_model_representation                                   None
+Name: 981, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\秦壮\员工照片-秦壮.jpg
+adaface_model_representation                                 None
+Name: 1027, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\翟博宇\员工照片-翟博宇.jpg
+adaface_model_representation                                   None
+Name: 1059, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\胡万俊\员工照片-胡万俊.jpg
+adaface_model_representation                                   None
+Name: 1069, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\胡毅\员工照片-胡毅.jpg
+adaface_model_representation                                 None
+Name: 1079, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\苏叶\员工照片-苏叶.jpg
+adaface_model_representation                                 None
+Name: 1086, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\苏宁\员工照片-苏宁.jpg
+adaface_model_representation                                 None
+Name: 1088, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\董文成\员工照片-董文成.jpg
+adaface_model_representation                                   None
+Name: 1121, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\蔡佳琪\员工照片-蔡佳琪.jpg
+adaface_model_representation                                   None
+Name: 1130, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\薄一行\员工照片-薄一行.jpg
+adaface_model_representation                                   None
+Name: 1134, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\裴东亚\员工照片-裴东亚.jpg
+adaface_model_representation                                   None
+Name: 1144, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\褚士博\员工照片-褚士博.jpg
+adaface_model_representation                                   None
+Name: 1147, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\谢延涛\员工照片-谢延涛.jpg
+adaface_model_representation                                   None
+Name: 1155, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\谭佳琪\员工照片-谭佳琪.jpg
+adaface_model_representation                                   None
+Name: 1161, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\贾伟\员工照片-贾伟.jpg
+adaface_model_representation                                 None
+Name: 1172, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\贾奕浩\员工照片-贾奕浩.jpg
+adaface_model_representation                                   None
+Name: 1175, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\赵庆玲\员工照片-赵庆玲.jpg
+adaface_model_representation                                   None
+Name: 1202, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\赵文秋\员工照片-赵文秋.jpg
+adaface_model_representation                                   None
+Name: 1208, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\赵永智\员工照片-赵永智.jpg
+adaface_model_representation                                   None
+Name: 1217, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\赵泽迪\员工照片-赵泽迪.jpg
+adaface_model_representation                                   None
+Name: 1218, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\赵满成\员工照片-赵满成.jpg
+adaface_model_representation                                   None
+Name: 1219, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\赵红\员工照片-赵红.jpg
+adaface_model_representation                                 None
+Name: 1227, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\路千慧\员工照片-路千慧.jpg
+adaface_model_representation                                   None
+Name: 1235, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\路银龙\员工照片-路银龙.jpg
+adaface_model_representation                                   None
+Name: 1237, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\迟中明\员工照片-迟中明.jpg
+adaface_model_representation                                   None
+Name: 1242, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\邢勇\员工照片-邢勇.jpg
+adaface_model_representation                                 None
+Name: 1250, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\邵丹丹\员工照片-邵丹丹.jpg
+adaface_model_representation                                   None
+Name: 1259, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\郝素香\员工照片-郝素香.jpg
+adaface_model_representation                                   None
+Name: 1277, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\金虎生\员工照片-金虎生.jpg
+adaface_model_representation                                   None
+Name: 1309, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\门凯\员工照片-门凯.jpg
+adaface_model_representation                                 None
+Name: 1316, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\陈利\员工照片-陈利.jpg
+adaface_model_representation                                 None
+Name: 1333, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\陈庆\员工照片-陈庆.jpg
+adaface_model_representation                                 None
+Name: 1341, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\陈志勇\员工照片-陈志勇.jpg
+adaface_model_representation                                   None
+Name: 1343, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\陈理节\员工照片-陈理节.jpg
+adaface_model_representation                                   None
+Name: 1356, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\陈鑫\员工照片-陈鑫.jpg
+adaface_model_representation                                 None
+Name: 1363, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\韩福新\员工照片-韩福新.jpg
+adaface_model_representation                                   None
+Name: 1387, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\马小宇\员工照片-马小宇.jpg
+adaface_model_representation                                   None
+Name: 1414, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\高会明\员工照片-高会明.jpg
+adaface_model_representation                                   None
+Name: 1430, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\高梦婷\员工照片-高梦婷.jpg
+adaface_model_representation                                   None
+Name: 1444, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\魏袁方\员工照片-魏袁方.jpg
+adaface_model_representation                                   None
+Name: 1463, dtype: object特征数据提取失败，请排查照片
+identity                        face_alignment/emp\黄燚辉\员工照片-黄燚辉.jpg

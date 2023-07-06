@@ -375,12 +375,14 @@ https://github.com/mk-minchul/AdaFace
 
 
 GPU: 
-+ CPU12C(Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz)
++ CPU 12C(Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz)
 + GPU(英伟达 3360 8.5 算力，12G 显存) 
 + 处理速度： 21968/21968 [2:59:19<00:00,  2.04it/s,  ⚒️]
 
 CPU:
-+ CPU12C(Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz)
++ CPU 12C(Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz)
 + 处理速度： 21968/21968 [3:11:11<00:00,  1.92it/s,  ⚒️]
 
-+ 2个小时
+
+
+

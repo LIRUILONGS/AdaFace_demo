@@ -17,7 +17,18 @@ def add_padding(pil_img, top, right, bottom, left, color=(0,0,0)):
     result.paste(pil_img, (left, top))
     return result
 
-def get_aligned_face(image_path, rgb_pil_image=None):
+def get_aligned_face(image_path, rgb_pil_image=None,limit=1000):
+    """
+    @Time    :   2023/07/04 22:22:17
+    @Author  :   liruilonger@gmail.com
+    @Version :   1.0
+    @Desc    :   用于从图像中检测和对齐人脸的函数
+                 Args:
+                   接受一个图像路径或者PIL格式的RGB图像作为输入
+                 Returns:
+                   并返回检测到的人脸
+    """
+    
     try:
 
         if rgb_pil_image is None:
@@ -29,7 +40,7 @@ def get_aligned_face(image_path, rgb_pil_image=None):
         return  None         
     # find face
     try:
-        bboxes, faces = mtcnn_model.align_multi(img, limit=1000)
+        bboxes, faces = mtcnn_model.align_multi(img, limit)
         #pbar = tqdm(
         #            range(0, len(faces)),
         #            desc="检测到人脸：😈😈 ",
